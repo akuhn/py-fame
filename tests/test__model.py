@@ -5,6 +5,7 @@ from fame import constraint
 from fame import derived_field
 from fame import nullable
 from fame import options
+from fame import regexp
 from fame import schema
 from fame import Model
 
@@ -23,7 +24,7 @@ class Example(Model):
         ))
         m.field('treatments', array(str))
         m.field('percent_exposed', int, default=100)
-        m.field('design', nullable(str))
+        m.field('design', nullable(regexp("^https?://")))
 
     @derived_field
     def is_miscellanous(self):
@@ -113,7 +114,7 @@ def test___should_not_validate():
     expect(errors).to(contain(end_with("expected percent_exposed to not exceed 100, got 200")))
     expect(errors).to(contain(end_with("expected field 'treatments' to be array(basestring), got None")))
     expect(errors).to(contain(end_with("expected field 'subject' to be options('user', 'visitor', 'email', 'listing', 'market'), got None")))
-    expect(errors).to(contain(end_with("expected field 'design' to be nullable(basestring), got False")))
+    expect(errors).to(contain(end_with("expected field 'design' to be nullable(regexp(^https?://)), got False")))
     expect(errors).to(have_length(4))
 
 
@@ -178,4 +179,26 @@ def test____should_be_broken():
     expect(errors).to(contain(end_with("exepected to not return False")))
     expect(errors).to(contain(end_with("exepected to not return foo and bar")))
     expect(errors).to(have_length(2))
+
+
+def test____should_match_regexp():
+    m = Example(name='button_color', subject='user', treatments=[], design='http://example.com')
+    errors = list(m.error_messages())
+
+    expect(errors).to(be_empty)
+    expect(m.is_valid()).to(be_true)
+
+
+def test____should_not_match_regexp():
+    m = Example(design='covfefe')
+    errors = list(m.error_messages())
+
+    expect(errors).to(contain(end_with("expected field 'design' to be nullable(regexp(^https?://)), got covfefe")))
+
+
+def test____number_should_not_match_regexp():
+    m = Example(design=9000)
+    errors = list(m.error_messages())
+
+    expect(errors).to(contain(end_with("expected field 'design' to be nullable(regexp(^https?://)), got 9000")))
 

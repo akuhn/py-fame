@@ -1,3 +1,6 @@
+import re
+
+
 def as_matcher(type_declaration):
     if type_declaration == str: type_declaration = basestring
     if isinstance(type_declaration, type): return TypeMatcher(type_declaration)
@@ -51,4 +54,17 @@ class OptionsMatcher(object):
 
     def __str__(self):
         return "options{}".format(self.strings)
+
+
+class RegularExpressionMatcher(object):
+
+    def __init__(self, pattern):
+        self.regexp = re.compile(pattern)
+
+    def __call__(self, value):
+        if not isinstance(value, basestring): return False
+        return self.regexp.search(value)
+
+    def __str__(self):
+        return "regexp({})".format(self.regexp.pattern)
 
