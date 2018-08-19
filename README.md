@@ -1,6 +1,6 @@
-# Fame = framework for metamodelling
+# A little language for schema-enforced models
 
-A little language for schema-enforced models.
+Fame is a framework for metamodelling in Python.
 
 - Entities are described by models
 - Models are described by metamodels
