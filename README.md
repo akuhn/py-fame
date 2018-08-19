@@ -28,7 +28,7 @@ Example
             ))
             m.field('treatments', array(str))
             m.field('percent_exposed', int, default=100)
-            m.field('design', nullable(str))
+            m.field('design', nullable(regexp('^https?')))
 
         @derived_field
         def is_miscellanous(self):
