@@ -71,10 +71,10 @@ class Model(object):
         return self.metamodel.get_field_value(self, field_name, strict=False)
 
     def is_valid(self):
-        return not any(self.error_messages())
+        return not any(self.metamodel.error_messages(self))
 
     def error_messages(self):
-        return self.metamodel.error_messages(self)
+        return list(self.metamodel.error_messages(self))
 
     @property
     def metamodel(self, m):
