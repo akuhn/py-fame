@@ -108,7 +108,7 @@ class DerivedField(object):
         self.initializer = function
 
     def __get__(self, entity, model):
-        value = self.get(entity)
+        value = self.get_value(entity)
         entity.__dict__[self.name] = value
         return value
 
