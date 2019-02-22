@@ -47,13 +47,13 @@ class NullableMatcher(object):
 class OptionsMatcher(object):
 
     def __init__(self, *strings):
-        self.strings = strings
+        self.options = strings
 
     def __call__(self, value):
-        return value in self.strings
+        return value in self.options
 
     def __str__(self):
-        return "options{}".format(self.strings)
+        return "options{}".format(self.options)
 
 
 class RegularExpressionMatcher(object):
@@ -67,4 +67,22 @@ class RegularExpressionMatcher(object):
 
     def __str__(self):
         return "regexp({})".format(self.regexp.pattern)
+
+
+class AnythingMatcher(object):
+
+    def __call__(self, value):
+        return True
+
+    def __str__(self):
+        return 'anything'
+
+
+class ReservedMatcher(object):
+
+    def __call__(self, value):
+        return False
+
+    def __str__(self):
+        return 'reserved'
 

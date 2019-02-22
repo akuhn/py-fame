@@ -7,6 +7,8 @@ from matchers import ArrayMatcher as array
 from matchers import NullableMatcher as nullable
 from matchers import OptionsMatcher as options
 from matchers import RegularExpressionMatcher as regexp
+from matchers import AnythingMatcher as anything
+from matchers import ReservedMatcher as reserved
 
 del model
 del matchers
