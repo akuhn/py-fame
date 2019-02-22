@@ -82,7 +82,7 @@ def test____should_validate_model():
         whatnot='gibberish',
     )
 
-    expect(m.error_messages()).to(be_empty)
+    expect(list(m.error_messages())).to(be_empty)
     expect(m.is_valid()).to(be_true)
 
 
@@ -108,7 +108,7 @@ def test____should_get_fields_as_items():
 
 def test___should_not_validate():
     m = Example(name='button_color', percent_exposed=200, design=False)
-    errors = m.error_messages()
+    errors = list(m.error_messages())
 
     expect(m.is_valid()).to_not(be_true)
     expect(errors).to(contain(end_with("expected percent_exposed to not exceed 100, got 200")))
@@ -120,8 +120,9 @@ def test___should_not_validate():
 
 def test____should_automagically_match_unicode():
     m = Example(name=u'gibberish', subject=u'user', treatments=[])
+    errors = list(m.error_messages())
 
-    expect(m.error_messages()).to(be_empty)
+    expect(errors).to(be_empty)
     expect(m.is_valid()).to(be_true)
 
 
@@ -172,19 +173,12 @@ def test____should_memoize_derived_fields():
 
 def test____should_be_broken():
     m = Broken()
-    errors = m.error_messages()
+    errors = list(m.error_messages())
 
     expect(m.metamodel.constraints).to(have_length(2))
     expect(errors).to(contain(end_with("exepected to not return False")))
     expect(errors).to(contain(end_with("exepected to not return foo and bar")))
     expect(errors).to(have_length(2))
-
-
-def test____should_match_regexp():
-    m = Example(name='button_color', subject='user', treatments=[], design='http://example.com')
-
-    expect(m.error_messages()).to(be_empty)
-    expect(m.is_valid()).to(be_true)
 
 
 def test____should_not_match_regexp():
@@ -201,4 +195,17 @@ def test____number_should_not_match_regexp():
     expect(m.error_messages()).to(contain(end_with(
         "expected field 'design' to be nullable(regexp(^https?://)), got 9000"
     )))
+
+
+def test____should_have_options_for():
+    options = ('user', 'visitor', 'email', 'listing', 'market')
+
+    expect(Example.options_for('subject')).to(equal(options))
+
+
+def test____should_have_metamodel():
+    m = Example()
+
+    expect(Example).to(have_property('metamodel'))
+    expect(Example.metamodel).to(equal(m.metamodel))
 

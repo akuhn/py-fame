@@ -7,7 +7,7 @@ Fame is a framework for metamodelling in Python.
 - Models have fields, derived fields and constraints
 - Entities can have custom fields
 - Entities can be created even if data is invalid
-- There are functions to validate and get all errors
+- There are functions to validate and get error messages
 - Validation checks presence and type of fields
 - Validation checks all constraints
 - Derived fields are memoized
@@ -41,10 +41,10 @@ Example
 
 Conventions
 
-    - Define metamodel function first
-    - Then define derived field functions
-    - Then define all the constraint functions
-    - Constraint functions are all named "constraint", that is intentional
+- Define metamodel function first
+- Then define derived field functions
+- Then define all the constraint functions
+- Constraint functions are all named "constraint", that is intentional
 
 
 ## Installation
